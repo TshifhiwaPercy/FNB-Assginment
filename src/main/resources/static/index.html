@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            color:white;
+            background-color:rgb(155,230,177);
+        }
+        h1{
+            margin:0;
+            background-color:rgb(24,33,141);
+            text-align:center;
+
+        }
+        label{
+            color:black;
+        }
+
+    </style>
+</head>
+<body onload="onLoad();">
+    <h1 id="heading">Coin Dispenser</h1>
+    <div id="login">
+        <label>Create new API KEY</label><input type="number" id="API_KEY" placeholder="enter a number here" max="2147483647" />
+        <button id="btnLog" onclick="createAPIKEY();">Create API KEY</button>
+    </div>
+    <div id="main">
+
+        <label>API ID:</label><input type="number" id="Id" placeholder="ID" /><br />
+        <p>Please add your coins below</p>
+        <label>Coin 1:</label><input type="number" id="v1" placeholder="Change 1"/><br/>
+        <label>Coin 2:</label><input type="number" id="v2" placeholder="Change 2" /><br/>
+        <label>Coin 3:</label><input type="number" id="v3" placeholder="Change 3"/><br/>
+        <label>Coin 4:</label><input type="number" id="v4" placeholder="Change 4" /><br/>
+        <label>Amount:</label><input type="number" id="amount" placeholder="Enter amount here" /><br/>
+        <button id="btnChange" onclick="btnClick();" >Get Change</button><br/><br/>
+        <label id="changeOutput"></label>
+    </div>
+
+</body>
+<script>
+    function btnClick(){
+    try{
+        var v1 = document.getElementById("v1").value;
+        var v2 = document.getElementById("v2").value;
+        var v3 = document.getElementById("v3").value;
+        var v4 = document.getElementById("v4").value;
+        var amount = document.getElementById("amount").value;
+        var id = document.getElementById("Id").value;
+        var xhtml = new XMLHttpRequest();
+        var statement = "v1="+v1+"&v2="+v2+"&v3="+v3+"&v4="+v4+"&amount="+amount+"&Id="+id;
+        xhtml.onreadystatechange=function(){
+            if(this.readyState==4 && this.status==200){
+                document.getElementById("changeOutput").innerHTML=this.responseText;
+            }
+        }
+        xhtml.open("GET","http://localhost:8080/api/change?"+statement);
+        xhtml.send();
+
+    }
+    catch(ex){
+            alert(ex.toString());
+        }
+    }
+    function onLoad(){
+        document.getElementById("main").style.display="none";
+    }
+    function createAPIKEY(){
+        try{
+            alert("STARTED");
+            var key = document.getElementById("API_KEY").value;
+            alert(key);
+            var xh = new XMLHttpRequest();
+            xh.onreadystatechange=function(){
+                if(this.readyState==2 &&this.status==200){
+                    alert("API KEY created");
+                    document.getElementById("main").style.display="block";
+                    document.getElementById("login").style.display="none";
+                }
+
+            }
+            xh.open("PUT","http://localhost:8080/api/login?ID="+key);
+            xh.send();
+        }
+        catch(ex){
+         alert(ex.toString());
+        }
+    }
+</script>
+</html>
