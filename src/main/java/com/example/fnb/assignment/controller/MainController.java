@@ -29,7 +29,7 @@ public class MainController {
     //This api allows a user to pass an amount then returns the minimum combination of rands
     //Usage: localhost:8080/amount?amount=212&Id=2342 -->user id that they provided during the login page phase
     @GetMapping("/change")
-    public String getChange(@RequestParam int v1, @RequestParam int v2, @RequestParam int v3, @RequestParam int v4,@RequestParam int amount, @RequestParam long Id){
+    public String getChange(@RequestParam Integer[] arr,@RequestParam int amount, @RequestParam long Id){
        Optional<API_ENTITY> enti = API_ENTITY_REPO.findById(Id);
        if(enti.isEmpty()){
 
@@ -44,8 +44,8 @@ public class MainController {
                    "</html>";
        }
        else{
-           Change change = new Change(v1,v2,v3,v4,amount);
-           return change.getChange().toString();
+          Change change = new Change(arr,amount);
+          return change.getChange().toString();
        }
     }
 

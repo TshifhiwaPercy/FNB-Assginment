@@ -1,23 +1,20 @@
 package com.example.fnb.assignment.logic;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 //Class used for calculating change
 public class Change{
-    private  int V1 = 0;
-    private  int V2 = 0;
-    private  int V3 = 0;
-    private  int V4 = 0;
+    private Integer[] arr;
     private int amount = 0;
 
     public Change(){}
     //Initial constructor takes in any integer amount and sets it to a local variable
-    public Change(int v1, int v2, int v3, int v4, int amount){
-        this.V1 = v1;
-        this.V2 = v2;
-        this.V3 = v3;
-        this.V4 = v4;
+    public Change(Integer[] arr, int amount){
+        this.arr = arr;
+        Arrays.sort(this.arr);
         setAmount(amount);
     }
-
     //Setter method for amount
     private void setAmount(int amount){
 
@@ -31,37 +28,32 @@ public class Change{
     //The following method can be invoked externally to return how the change should be like
     //E.g amount = 13 below method will return R10 x 1, and R2 x 1, and R1 x 1; --->This is an indication to how the change should be sorted
     public String getChange(){
-        //Check if the lowest amount V1 provided is greater or less than the given amount
-        String combo = "";
-        int v1 = 0, v2 = 0, v3 = 0,v4 = 0; //These variables count the number of occurences required for the numbers or amounts 1,2,5,10 respectively.
+        String combo = "";//Will be used a storage string when calculating the different combinations required
+        int counter = arr.length-1; //Variable will be used to read the array values from highest to lowest
+        int total = 0; //Variable will be used to calculate the maximum combination of each integer type is required
+        if(arr.length>0) //Confirm arr has at least a single value;
+        {
 
-       if(V1>amount){
-           combo = "ERROR THE (V) values PROVIDED ARE ALL GREATER THAN THE AMOUNT";
-       }
-       else{
-           while(amount>0){
-               if(amount>=V4){
-                   v4 += amount/V4;
-                   amount = amount-(V4*v4);
-                   combo+="R"+V4+" x "+v4+", ";
-               }
-               else if(amount>=V3){
-                   v3+=amount/V3;
-                   amount=amount-(v3*V3);
-                   combo+="R"+V3+" x "+v3+", ";
-               }
-               else if(amount>=V2){
-                   v2+=amount/V2;
-                   amount=amount-(v2*V2);
-                   combo+="R"+V2+" x "+v2+", ";
-               }
-               else{
-                   v1+=amount/V1;
-                   amount=amount-(v1*V1);
-                   combo+="R"+V1+" x "+v1+", ";
-               }
-           }
-       }
+                while (amount > 0) {
+                    if (amount >= arr[counter] && arr[counter] > 0) {
+                        total += amount / arr[counter]; //Arithmetic expression allows us to extract values after the comma during division eg incases of 11/10 = 1.1, such an expression allows us to extract the .1 value
+                        amount = amount - (arr[counter] * total);
+                        combo += "R" + arr[counter] + " x " + total + ", ";
+                    } else { //Statement is invoked if the current array value is smaller than 1 or greater than the current amount.
+                        if (counter-1> -1) {
+                            counter--; //Decrement the value of count to move to a lower value
+                        } else {
+                            return combo += "\nChange for the following amount could not be calculated R" + amount + " "; //Expression will be invoked in cases where there is not a number in the arr that can divide into the current amount
+                        }
+                        total = 0;
+                    }
+                }
+            
+        }
+        else{
+            return "Change could not be calculated";
+        }
         return combo;
     }
+
 }
