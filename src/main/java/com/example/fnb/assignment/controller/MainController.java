@@ -13,7 +13,8 @@ import java.util.Optional;
 public class MainController {
     @Autowired
     private API_ENTITY_REPOSITORY API_ENTITY_REPO;
-
+    @GetMapping("/")//Echo server
+    public boolean echo(){return true;}
     //This api allows a user to create a login Id
     //Usage example localhost:8080/login?=1
     @RequestMapping(value="/login", method= RequestMethod.PUT)

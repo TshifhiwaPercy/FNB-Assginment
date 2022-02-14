@@ -38,17 +38,15 @@ public class Change{
                     if (amount >= arr[counter] && arr[counter] > 0) {
                         total += amount / arr[counter]; //Arithmetic expression allows us to extract values after the comma during division eg incases of 11/10 = 1.1, such an expression allows us to extract the .1 value
                         amount = amount - (arr[counter] * total);
-                        combo += "R" + arr[counter] + " x " + total + ", ";
+                        combo += "R" + arr[counter] + "x" + total + ",";
                     } else { //Statement is invoked if the current array value is smaller than 1 or greater than the current amount.
                         if (counter-1> -1) {
                             counter--; //Decrement the value of count to move to a lower value
-                        } else {
-                            return combo += "\nChange for the following amount could not be calculated R" + amount + " "; //Expression will be invoked in cases where there is not a number in the arr that can divide into the current amount
                         }
                         total = 0;
                     }
                 }
-            
+
         }
         else{
             return "Change could not be calculated";
